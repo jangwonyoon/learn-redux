@@ -1,49 +1,30 @@
 import { createStore } from "redux";
-import { act } from "react-dom/test-utils";
 
-const add = document.getElementById("add");
-const minus = document.getElementById("minus");
-const number = document.querySelector("span");
+const form = document.querySelector("form");
+const input = document.querySelector("input");
+const ul = document.querySelector("ul");
 
-number.innerText = 0;
+const ADD_TODO = "ADD_TODO";
+const DELETE_TODO = "DELETE_TODO";
 
-const countModifier = (count = 0, action) => {
-  // if (action.type === "ADD") {
-  //   return count + 1;
-  // } else if (action.type === "MINUS") {
-  //   return count - 1;
-  // } else {
-  //   return count;
-  // }
-  // if문을 스위치로 바꾸어 줘 보기 편하게 한다.
+const reducer = (state = [], action) => {
   switch (action.type) {
-    case "ADD":
-      return count + 1;
-    case "MINUS":
-      return count - 1;
+    case ADD_TODO:
+      return [];
+    case DELETE_TODO:
+      return [];
     default:
-      return count;
+      return state;
   }
 };
 
-const countStore = createStore(countModifier);
+const store = createStore(reducer);
 
-const onChange = () => {
-  number.innerText = countStore.getState();
+const onSubmit = (e) => {
+  e.preventDefault();
+  const toDo = input.value;
+  input.value = "";
+  store.dispatch({ type: ADD_TODO, text: toDo });
 };
 
-countStore.subscribe(onChange);
-
-const handleAdd = () => {
-  countStore.dispatch({ type: "ADD" });
-};
-
-const handleMinus = () => {
-  countStore.dispatch({ type: "MINUS" });
-};
-
-console.log(countStore.getState());
-add.addEventListener("click", handleAdd);
-minus.addEventListener("click", handleMinus);
-
-// subscribe 상태 변화를 감지 해준다.
+form.addEventListener("submit", onSubmit);
