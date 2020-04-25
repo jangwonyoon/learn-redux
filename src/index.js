@@ -1,4 +1,5 @@
 import { createStore } from "redux";
+import { act } from "react-dom/test-utils";
 
 const add = document.getElementById("add");
 const minus = document.getElementById("minus");
@@ -7,21 +8,25 @@ const number = document.querySelector("span");
 number.innerText = 0;
 
 const countModifier = (count = 0, action) => {
-  if (action.type === "ADD") {
-    return count + 1;
-  } else if (action.type === "MINUS") {
-    return count - 1;
+  // if (action.type === "ADD") {
+  //   return count + 1;
+  // } else if (action.type === "MINUS") {
+  //   return count - 1;
+  // } else {
+  //   return count;
+  // }
+  // if문을 스위치로 바꾸어 줘 보기 편하게 한다.
+  switch (action.type) {
+    case "ADD":
+      return count + 1;
+    case "MINUS":
+      return count - 1;
+    default:
+      return count;
   }
 };
 
 const countStore = createStore(countModifier);
-
-countStore.dispatch({ type: "ADD" });
-countStore.dispatch({ type: "ADD" });
-countStore.dispatch({ type: "ADD" });
-countStore.dispatch({ type: "ADD" });
-countStore.dispatch({ type: "ADD" });
-countStore.dispatch({ type: "MINUS" });
 
 const onChange = () => {
   number.innerText = countStore.getState();
