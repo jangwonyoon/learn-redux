@@ -4,34 +4,41 @@ const add = document.getElementById("add");
 const minus = document.getElementById("minus");
 const number = document.querySelector("span");
 
-const reducer = (count = 0, action) => {
-  console.log(count, action);
+number.innerText = 0;
+
+const countModifier = (count = 0, action) => {
   if (action.type === "ADD") {
-    return (count = count + 1);
-  } else if (action.type === "Minus") {
-    return (count = count - 1);
-  } else {
-    return count;
+    return count + 1;
+  } else if (action.type === "MINUS") {
+    return count - 1;
   }
 };
 
-const store = createStore(reducer);
+const countStore = createStore(countModifier);
 
-// 스토어에 리듀서를 이용하여 데이터를 바꾸어 준다.
-// 다른 함수는 불가하다 데이터를 바꾸는 것이
+countStore.dispatch({ type: "ADD" });
+countStore.dispatch({ type: "ADD" });
+countStore.dispatch({ type: "ADD" });
+countStore.dispatch({ type: "ADD" });
+countStore.dispatch({ type: "ADD" });
+countStore.dispatch({ type: "MINUS" });
 
-// 리듀서에서 액션을 취해 상태 or 변수를 처리 한다.
+const onChange = () => {
+  number.innerText = countStore.getState();
+};
 
-// dispatch 함수를 통해서 액션을 처리 해준다.
-// 디스패치 함수 내부의 변수는 객체여야 한다.
+countStore.subscribe(onChange);
 
-store.dispatch({ type: "ADD" });
-store.dispatch({ type: "ADD" });
-store.dispatch({ type: "ADD" });
-store.dispatch({ type: "ADD" });
-store.dispatch({ type: "ADD" });
-store.dispatch({ type: "ADD" });
+const handleAdd = () => {
+  countStore.dispatch({ type: "ADD" });
+};
 
-store.dispatch({ type: "Minus" });
+const handleMinus = () => {
+  countStore.dispatch({ type: "MINUS" });
+};
 
-console.log(store.getState());
+console.log(countStore.getState());
+add.addEventListener("click", handleAdd);
+minus.addEventListener("click", handleMinus);
+
+// subscribe 상태 변화를 감지 해준다.
