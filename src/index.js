@@ -10,7 +10,7 @@ const DELETE_TODO = "DELETE_TODO";
 const reducer = (state = [], action) => {
   switch (action.type) {
     case ADD_TODO:
-      return [];
+      return [...state, { text: action.text, id: Date.now() }];
     case DELETE_TODO:
       return [];
     default:
@@ -20,6 +20,8 @@ const reducer = (state = [], action) => {
 
 const store = createStore(reducer);
 
+store.subscribe(() => console.log(store.getState()));
+
 const onSubmit = (e) => {
   e.preventDefault();
   const toDo = input.value;
@@ -28,3 +30,5 @@ const onSubmit = (e) => {
 };
 
 form.addEventListener("submit", onSubmit);
+
+// ...state 배열의 모든 요소 contents
